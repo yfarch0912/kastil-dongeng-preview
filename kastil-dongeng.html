@@ -59,6 +59,13 @@ button{font-family:inherit;cursor:pointer}
 @keyframes growDown{from{opacity:0;transform:translateY(-46px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 .lyr-flower-bottom{bottom:-4px;left:0;width:100%;animation:growUp 1.5s 2.7s cubic-bezier(.22,.8,.3,1) both;transform-origin:bottom center}
 @keyframes growUp{from{opacity:0;transform:translateY(46px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* BUNGA INDIVIDUAL bawah sampul: 12 sprite terpisah (flower-01..12) ditumpuk berlapis —
+   baris belakang lebih kecil & lebih redup, baris depan lebih besar; tiap bunga elemen sendiri
+   dengan pangkal di dasar sprite (transform-origin bawah) untuk sway angin per bunga (skrip ANGIN). */
+.flw{transform-origin:50% 100%;animation:flwIn 1.2s cubic-bezier(.22,.8,.3,1) both}
+.flw.back{filter:saturate(.9) brightness(1.05)}
+@keyframes flwIn{from{opacity:0;transform:translateY(34px) scale(.92)}to{opacity:var(--fo,1);transform:translateY(0) scale(1)}}
+.flw.back{--fo:.88}
 /* ANGIN: ayunan bunga digerakkan WAAPI (skrip di bawah) memakai properti rotate/translate
    yang terpisah dari animasi transform masuk (growDown/growUp) — keduanya menumpuk, tidak bertabrakan */
 .wind-fl{will-change:rotate,translate}
@@ -220,7 +227,19 @@ body.opened #btnMusic{display:flex}
       <img class="lyr lyr-fountain" src="assets/undangya/kastil-dongeng/fountain.webp" alt="Air mancur marmer di depan kastil" data-plx="22">
       <div class="fountain-shimmer"></div>
       <img class="lyr lyr-flower-top wind-fl" data-wind="top" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
-      <img class="lyr lyr-flower-bottom wind-fl" data-wind="bottom" src="assets/undangya/kastil-dongeng/flower-bottom.webp" alt="">
+      <!-- bunga bawah: 12 sprite individual ditumpuk (belakang dulu, depan terakhir) -->
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.4" data-dur="5400" data-bend="4.5" style="left:-.5%;bottom:8%;width:11.5%;animation-delay:2.6s" src="assets/undangya/kastil-dongeng/flower-11.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.6" data-dur="6600" data-bend="5" style="left:-1%;bottom:5.5%;width:17.5%;animation-delay:2.7s" src="assets/undangya/kastil-dongeng/flower-03.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="3" data-dur="4800" data-bend="5.5" style="left:30.5%;bottom:7%;width:15.5%;animation-delay:2.8s" src="assets/undangya/kastil-dongeng/flower-09.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.8" data-dur="5900" data-bend="5" style="right:29.5%;bottom:8%;width:13.5%;animation-delay:2.75s" src="assets/undangya/kastil-dongeng/flower-07.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.5" data-dur="6300" data-bend="4.8" style="right:8.5%;bottom:8.4%;width:17%;animation-delay:2.65s" src="assets/undangya/kastil-dongeng/flower-05.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.3" data-dur="7100" data-bend="4.2" style="right:-1%;bottom:8%;width:16%;animation-delay:2.85s" src="assets/undangya/kastil-dongeng/flower-12.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.6" data-dur="6900" data-bend="6.5" style="left:-5.5%;bottom:-1.5%;width:31%;animation-delay:2.95s" src="assets/undangya/kastil-dongeng/flower-01.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.9" data-dur="6100" data-bend="6.8" style="left:18.5%;bottom:-2%;width:23.5%;animation-delay:3.05s" src="assets/undangya/kastil-dongeng/flower-02.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="4.6" data-dur="4600" data-bend="7" style="left:37.5%;bottom:-1%;width:11.5%;animation-delay:3.15s" src="assets/undangya/kastil-dongeng/flower-10.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="4.4" data-dur="5000" data-bend="7" style="right:37.5%;bottom:-1%;width:12%;animation-delay:3.2s" src="assets/undangya/kastil-dongeng/flower-08.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.8" data-dur="6500" data-bend="6.6" style="right:18.5%;bottom:-2%;width:24%;animation-delay:3.1s" src="assets/undangya/kastil-dongeng/flower-06.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.4" data-dur="7300" data-bend="6.2" style="right:-4.5%;bottom:-1.2%;width:26%;animation-delay:3s" src="assets/undangya/kastil-dongeng/flower-04.webp" alt="">
       <img class="lyr lyr-crest" src="assets/undangya/kastil-dongeng/crest.webp" alt="Crest emas kerajaan">
       <img class="lyr lyr-butterfly" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
       <img class="lyr lyr-butterfly b2" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
@@ -493,9 +512,18 @@ body.opened #btnMusic{display:flex}
   swayWind(document.querySelector('[data-wind="top"]'),
     ["1.5deg","-3.8deg","-1deg","-4.6deg","0.5deg","1.5deg"],
     ["0px 0px","6px 1px","10px 0px","4px 2px","-2px 0px","0px 0px"],5600,0);
-  swayWind(document.querySelector('[data-wind="bottom"]'),
-    ["-1deg","3.4deg","4.8deg","2deg","-2.2deg","-1deg"],
-    ["0px 0px","5px 0px","9px -1px","3px 1px","-2px 0px","0px 0px"],6800,-2300);
+  /* bunga individual bawah sampul (.flw): tiap bunga sway SENDIRI dari pangkal bawahnya.
+     Amplitudo (data-amp, ±2–5deg), durasi (data-dur, 4–8 dtk) dan fasa berbeda per bunga,
+     mengikuti pola kurva angin yang sama; arah pangkal bawah = positif (menekuk ke kanan). */
+  var FLW_PAT=[-0.21,0.71,1,0.42,-0.46,-0.21], FLW_TR=[0,0.55,1,0.33,-0.22,0];
+  document.querySelectorAll(".flw").forEach(function(el,i){
+    var amp=parseFloat(el.getAttribute("data-amp"))||3.4;
+    var dur=parseInt(el.getAttribute("data-dur"),10)||6200;
+    var ph=Math.round(Math.sin(i*39.7)*2300); /* fasa deterministik, beda tiap bunga */
+    var rot=FLW_PAT.map(function(f){return (f*amp).toFixed(2)+"deg";});
+    var tr=FLW_TR.map(function(f){return (f*amp*1.9).toFixed(1)+"px "+(f*amp*0.35).toFixed(1)+"px";});
+    swayWind(el,rot,tr,dur,ph);
+  });
   swayWind(document.querySelector('[data-wind="soft"]'),
     ["1deg","-2.6deg","-0.6deg","-3.2deg","0.4deg","1deg"],
     ["0px 0px","4px 1px","7px 0px","3px 1px","-1px 0px","0px 0px"],7400,-1200);
@@ -505,8 +533,8 @@ body.opened #btnMusic{display:flex}
     gustStart=performance.now();
     document.querySelectorAll("[data-wind]").forEach(function(el){
       var kind=el.getAttribute("data-wind");
-      var sign=(kind==="bottom")?1:-1;               /* satu arah angin: kiri → kanan */
-      var bend=(kind==="soft")?5:7.5;
+      var sign=(kind==="bottom"||kind==="flw")?1:-1; /* satu arah angin: kiri → kanan */
+      var bend=parseFloat(el.getAttribute("data-bend"))||((kind==="soft")?5:7.5);
       try{
         el.animate([
           {rotate:"0deg",translate:"0px 0px",easing:"cubic-bezier(.3,.7,.35,1)"},
