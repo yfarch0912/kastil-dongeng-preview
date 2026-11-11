@@ -141,14 +141,18 @@ section{position:relative;padding:64px 26px}
 .divider{width:120px;margin:14px auto 0;opacity:.9}
 .card{background:linear-gradient(180deg,rgba(255,253,246,.93),rgba(253,244,224,.9));border:1px solid var(--line);border-radius:20px;padding:26px 22px;box-shadow:0 14px 34px rgba(90,64,140,.16);position:relative;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .card::before{content:"";position:absolute;inset:7px;border:1px solid rgba(201,164,92,.35);border-radius:14px;pointer-events:none}
-/* background section PENUH hasil generate AI (ramai, se-konsep) + kerudung gading lembut jaga teks */
-.sec-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.sec-bg img{width:100%;height:calc(100% + 40px);margin-top:-20px;object-fit:cover;object-position:50% 50%}
-.sec-bg::after{content:"";position:absolute;inset:0;background:
-  radial-gradient(88% 62% at 50% 42%,rgba(252,246,231,.42) 0%,rgba(252,246,231,.16) 58%,rgba(252,246,231,0) 82%),
-  linear-gradient(180deg,rgba(252,246,231,.34) 0%,rgba(252,246,231,.10) 34%,rgba(252,246,231,.10) 66%,rgba(252,246,231,.38) 100%)}
-.sec-bg.pos-top img{object-position:50% 0}
-.sec-bg.pos-bottom img{object-position:50% 100%}
+/* SATU background dunia dongeng menyatu untuk seluruh halaman di bawah sampul:
+   satu lukisan master vertikal (langit + kastil UTUH di kejauhan -> taman mawar & teras
+   -> gerbang malam) diiris 5 band yang bertumpuk sambung-menyambung dalam satu layer
+   sticky; tumpukan band bergerak paralaks lambat mengikuti progres scroll <main>.
+   Tidak ada lagi background per-section yang ke-crop tengah. Kerudung gading lembut
+   pada ::after menjaga keterbacaan teks (panel kaca section tetap dipakai). */
+.world-bg{position:sticky;top:0;height:100dvh;margin-bottom:-100dvh;overflow:hidden;pointer-events:none;z-index:0;background:#e9dcf2}
+.world-stack{position:absolute;left:0;top:0;width:100%;will-change:transform}
+.world-stack img{width:100%;height:auto}
+.world-bg::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(88% 62% at 50% 42%,rgba(252,246,231,.40) 0%,rgba(252,246,231,.15) 58%,rgba(252,246,231,0) 82%),
+  linear-gradient(180deg,rgba(252,246,231,.32) 0%,rgba(252,246,231,.09) 34%,rgba(252,246,231,.09) 66%,rgba(252,246,231,.36) 100%)}
 .bg-tint{position:relative;z-index:1}
 section .sec-head{text-shadow:0 1px 0 rgba(255,251,240,.7),0 0 16px rgba(255,251,240,.65)}
 .panel-glass{background:linear-gradient(180deg,rgba(255,253,247,.68),rgba(255,248,232,.52));border:1px solid rgba(201,164,92,.38);border-radius:24px;box-shadow:0 14px 30px rgba(90,64,140,.14);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
@@ -369,9 +373,9 @@ body.opened #btnMusic{display:flex}
   </header>
 
   <main id="content">
+    <div class="world-bg" aria-hidden="true"><div class="world-stack" id="worldStack"><img src="assets/undangya/kastil-dongeng/bg-world-1.webp" alt="" width="720" height="1330" decoding="async"><img src="assets/undangya/kastil-dongeng/bg-world-2.webp" alt="" width="720" height="900" loading="lazy" decoding="async"><img src="assets/undangya/kastil-dongeng/bg-world-3.webp" alt="" width="720" height="720" loading="lazy" decoding="async"><img src="assets/undangya/kastil-dongeng/bg-world-4.webp" alt="" width="720" height="750" loading="lazy" decoding="async"><img src="assets/undangya/kastil-dongeng/bg-world-5.webp" alt="" width="720" height="243" loading="lazy" decoding="async"></div></div>
     <!-- ================= PEMBUKA ================= -->
     <section id="sambutan">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-mempelai.webp" alt="" data-plx="6"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/crest.webp" alt="">
@@ -389,7 +393,6 @@ body.opened #btnMusic{display:flex}
 
     <!-- ================= MEMPELAI ================= -->
     <section id="mempelai">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-mempelai.webp" alt="" data-plx="6"></div>
       <div class="sec-petals" aria-hidden="true"></div>
       <div class="bg-tint">
       <div class="sec-head rv rv-up">
@@ -423,7 +426,6 @@ body.opened #btnMusic{display:flex}
 
 <!-- ================= LOVE STORY ================= -->
     <section id="kisah">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-garden-night.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-rings.webp" alt="" loading="lazy" decoding="async">
@@ -475,7 +477,6 @@ body.opened #btnMusic{display:flex}
 
         <!-- ================= COUNTDOWN + ACARA ================= -->
     <section id="acara">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-ballroom.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-clock.webp" alt="" loading="lazy" decoding="async">
@@ -534,7 +535,6 @@ body.opened #btnMusic{display:flex}
 
     <!-- ================= GALERI ================= -->
     <section id="galeri">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-galeri.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
       <div class="sec-head rv rv-up">
         <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-key.webp" alt="" loading="lazy" decoding="async">
@@ -557,7 +557,6 @@ body.opened #btnMusic{display:flex}
 
 <!-- ================= CUPLIKAN ================= -->
     <section id="cuplikan">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-galeri.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-crown.webp" alt="" loading="lazy" decoding="async">
@@ -579,7 +578,6 @@ body.opened #btnMusic{display:flex}
 
     <!-- ================= LIVE STREAMING + TAGAR ================= -->
     <section id="live">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-ballroom.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-carriage.webp" alt="" loading="lazy" decoding="async">
@@ -613,7 +611,6 @@ body.opened #btnMusic{display:flex}
 
         <!-- ================= RSVP ================= -->
     <section id="rsvp">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-rsvp.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-rings.webp" alt="" loading="lazy" decoding="async">
@@ -637,7 +634,6 @@ body.opened #btnMusic{display:flex}
 
 <!-- ================= BUKU TAMU & CHECK-IN QR ================= -->
     <section id="bukutamu">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-rsvp.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-scroll.webp" alt="" loading="lazy" decoding="async">
@@ -662,7 +658,6 @@ body.opened #btnMusic{display:flex}
 
         <!-- ================= AMPLOP ================= -->
     <section id="amplop">
-      <div class="sec-bg pos-top"><img src="assets/undangya/kastil-dongeng/bg-penutup.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
       <div class="sec-head rv rv-up head-glass">
         <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-crown.webp" alt="" loading="lazy" decoding="async">
@@ -693,7 +688,6 @@ body.opened #btnMusic{display:flex}
 
 <!-- ================= TURUT MENGUNDANG ================= -->
     <section id="turut">
-      <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-penutup.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <div class="bg-tint">
         <div class="sec-head rv rv-up">
           <img class="sec-icon" src="assets/undangya/kastil-dongeng/crest.webp" alt="" loading="lazy" decoding="async">
@@ -717,7 +711,6 @@ body.opened #btnMusic{display:flex}
 
         <!-- ================= PENUTUP ================= -->
     <section id="penutup" style="text-align:center">
-      <div class="sec-bg pos-bottom"><img src="assets/undangya/kastil-dongeng/bg-penutup.webp" alt="" data-plx="6" loading="lazy" decoding="async"></div>
       <img class="lyr wind-fl" data-wind="soft" data-anchor="top" style="position:absolute;top:6px;left:0;width:100%;opacity:.55;z-index:1" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="" loading="lazy" decoding="async">
       <div class="sec-petals" aria-hidden="true"></div>
       <div class="bg-tint panel-glass" style="padding:30px 22px 26px">
@@ -1178,6 +1171,30 @@ body.opened #btnMusic{display:flex}
     try{localStorage.setItem(KEY,JSON.stringify(items.slice(0,30)));}catch(err){}
     render(items); e.target.reset();
   });
+})();
+</script>
+<script>
+(function(){
+  /* Paralaks SATU dunia: tumpukan band background bergerak lambat mengikuti progres
+     scroll <main> (langit+kastil -> taman -> gerbang malam). Transform-only + rAF
+     throttle (standar smooth); nonaktif bila prefers-reduced-motion. */
+  var stack=document.getElementById("worldStack"), main=document.getElementById("content");
+  if(!stack||!main)return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  var ticking=false;
+  function move(){
+    ticking=false;
+    var vh=window.innerHeight||0, r=main.getBoundingClientRect();
+    var total=r.height-vh; if(total<=0)return;
+    var p=-r.top/total; p=p<0?0:(p>1?1:p);
+    var over=stack.offsetHeight-vh; if(over<0)over=0;
+    stack.style.transform="translate3d(0,"+(-p*over).toFixed(1)+"px,0)";
+  }
+  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(move);}}
+  window.addEventListener("scroll",onScroll,{passive:true});
+  window.addEventListener("resize",onScroll);
+  window.addEventListener("load",move);
+  move();
 })();
 </script>
 </body>
