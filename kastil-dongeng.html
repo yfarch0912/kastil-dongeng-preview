@@ -66,6 +66,12 @@ button{font-family:inherit;cursor:pointer}
 .flw.back{filter:saturate(.9) brightness(1.05)}
 @keyframes flwIn{from{opacity:0;transform:translateY(34px) scale(.92)}to{opacity:var(--fo,1);transform:translateY(0) scale(1)}}
 .flw.back{--fo:.88}
+/* BUNGA INDIVIDUAL atas sampul: 12 sprite terpisah (flower-top-01..12) menggantung berlapis
+   MENGGANTIKAN strip flower-top.webp — baris belakang lebih kecil & redup, depan lebih besar;
+   pangkal gantung di ATAS sprite (transform-origin atas) untuk sway angin per bunga. */
+.flwt{transform-origin:50% 0;animation:flwtIn 1.3s cubic-bezier(.22,.8,.3,1) both}
+.flwt.back{filter:saturate(.88) brightness(1.06);--fo:.85}
+@keyframes flwtIn{from{opacity:0;transform:translateY(-30px) scale(.94)}to{opacity:var(--fo,1);transform:translateY(0) scale(1)}}
 /* ANGIN: ayunan bunga digerakkan WAAPI (skrip di bawah) memakai properti rotate/translate
    yang terpisah dari animasi transform masuk (growDown/growUp) — keduanya menumpuk, tidak bertabrakan */
 .wind-fl{will-change:rotate,translate}
@@ -226,20 +232,33 @@ body.opened #btnMusic{display:flex}
       <div class="cand-glow l"></div><div class="cand-glow r"></div>
       <img class="lyr lyr-fountain" src="assets/undangya/kastil-dongeng/fountain.webp" alt="Air mancur marmer di depan kastil" data-plx="22">
       <div class="fountain-shimmer"></div>
-      <img class="lyr lyr-flower-top wind-fl" data-wind="top" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
+      <!-- bunga atas: 12 sprite individual menggantung berlapis (belakang dulu, depan terakhir);
+           tengah atas sengaja lega untuk crest + judul -->
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="1.7" data-dur="9200" data-bend="3.2" style="left:-1%;top:-2%;width:13%;animation-delay:2.55s" src="assets/undangya/kastil-dongeng/flower-top-10.webp" alt="">
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="1.9" data-dur="8600" data-bend="3.4" style="left:10%;top:-3%;width:12.5%;animation-delay:2.65s" src="assets/undangya/kastil-dongeng/flower-top-07.webp" alt="">
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="1.8" data-dur="9000" data-bend="3.3" style="right:10%;top:-3%;width:12.5%;animation-delay:2.6s" src="assets/undangya/kastil-dongeng/flower-top-05.webp" alt="">
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="1.6" data-dur="9800" data-bend="3.1" style="right:-1%;top:-2%;width:13.5%;animation-delay:2.7s" src="assets/undangya/kastil-dongeng/flower-top-12.webp" alt="">
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="2" data-dur="8400" data-bend="3.5" style="left:24%;top:-4%;width:11%;animation-delay:2.8s" src="assets/undangya/kastil-dongeng/flower-top-08.webp" alt="">
+      <img class="lyr flwt back wind-fl" data-wind="topflw" data-amp="2.1" data-dur="8800" data-bend="3.5" style="right:24%;top:-4%;width:11%;animation-delay:2.85s" src="assets/undangya/kastil-dongeng/flower-top-01.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.7" data-dur="8000" data-bend="3.9" style="left:-3%;top:-1%;width:19%;animation-delay:2.95s" src="assets/undangya/kastil-dongeng/flower-top-02.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.5" data-dur="8600" data-bend="3.8" style="left:13.5%;top:-1.5%;width:17%;animation-delay:3.05s" src="assets/undangya/kastil-dongeng/flower-top-03.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.5" data-dur="8400" data-bend="3.8" style="right:13.5%;top:-1.5%;width:17%;animation-delay:3.1s" src="assets/undangya/kastil-dongeng/flower-top-04.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.7" data-dur="8200" data-bend="3.9" style="right:-3%;top:-1%;width:19%;animation-delay:3s" src="assets/undangya/kastil-dongeng/flower-top-06.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.9" data-dur="7600" data-bend="4" style="left:25.5%;top:-2.5%;width:12.5%;animation-delay:3.15s" src="assets/undangya/kastil-dongeng/flower-top-09.webp" alt="">
+      <img class="lyr flwt wind-fl" data-wind="topflw" data-amp="2.9" data-dur="7800" data-bend="4" style="right:25.5%;top:-2.5%;width:12.5%;animation-delay:3.2s" src="assets/undangya/kastil-dongeng/flower-top-11.webp" alt="">
       <!-- bunga bawah: 12 sprite individual ditumpuk (belakang dulu, depan terakhir) -->
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.4" data-dur="5400" data-bend="4.5" style="left:-.5%;bottom:8%;width:11.5%;animation-delay:2.6s" src="assets/undangya/kastil-dongeng/flower-11.webp" alt="">
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.6" data-dur="6600" data-bend="5" style="left:-1%;bottom:5.5%;width:17.5%;animation-delay:2.7s" src="assets/undangya/kastil-dongeng/flower-03.webp" alt="">
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="3" data-dur="4800" data-bend="5.5" style="left:30.5%;bottom:7%;width:15.5%;animation-delay:2.8s" src="assets/undangya/kastil-dongeng/flower-09.webp" alt="">
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.8" data-dur="5900" data-bend="5" style="right:29.5%;bottom:8%;width:13.5%;animation-delay:2.75s" src="assets/undangya/kastil-dongeng/flower-07.webp" alt="">
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.5" data-dur="6300" data-bend="4.8" style="right:8.5%;bottom:8.4%;width:17%;animation-delay:2.65s" src="assets/undangya/kastil-dongeng/flower-05.webp" alt="">
-      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.3" data-dur="7100" data-bend="4.2" style="right:-1%;bottom:8%;width:16%;animation-delay:2.85s" src="assets/undangya/kastil-dongeng/flower-12.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.6" data-dur="6900" data-bend="6.5" style="left:-5.5%;bottom:-1.5%;width:31%;animation-delay:2.95s" src="assets/undangya/kastil-dongeng/flower-01.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.9" data-dur="6100" data-bend="6.8" style="left:18.5%;bottom:-2%;width:23.5%;animation-delay:3.05s" src="assets/undangya/kastil-dongeng/flower-02.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="4.6" data-dur="4600" data-bend="7" style="left:37.5%;bottom:-1%;width:11.5%;animation-delay:3.15s" src="assets/undangya/kastil-dongeng/flower-10.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="4.4" data-dur="5000" data-bend="7" style="right:37.5%;bottom:-1%;width:12%;animation-delay:3.2s" src="assets/undangya/kastil-dongeng/flower-08.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.8" data-dur="6500" data-bend="6.6" style="right:18.5%;bottom:-2%;width:24%;animation-delay:3.1s" src="assets/undangya/kastil-dongeng/flower-06.webp" alt="">
-      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.4" data-dur="7300" data-bend="6.2" style="right:-4.5%;bottom:-1.2%;width:26%;animation-delay:3s" src="assets/undangya/kastil-dongeng/flower-04.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="1.7" data-dur="8600" data-bend="3.2" style="left:-.5%;bottom:8%;width:11.5%;animation-delay:2.6s" src="assets/undangya/kastil-dongeng/flower-11.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="1.9" data-dur="9400" data-bend="3.4" style="left:-1%;bottom:5.5%;width:17.5%;animation-delay:2.7s" src="assets/undangya/kastil-dongeng/flower-03.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.1" data-dur="8000" data-bend="3.6" style="left:30.5%;bottom:7%;width:15.5%;animation-delay:2.8s" src="assets/undangya/kastil-dongeng/flower-09.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="2.0" data-dur="8800" data-bend="3.5" style="right:29.5%;bottom:8%;width:13.5%;animation-delay:2.75s" src="assets/undangya/kastil-dongeng/flower-07.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="1.8" data-dur="9200" data-bend="3.3" style="right:8.5%;bottom:8.4%;width:17%;animation-delay:2.65s" src="assets/undangya/kastil-dongeng/flower-05.webp" alt="">
+      <img class="lyr flw back wind-fl" data-wind="flw" data-amp="1.6" data-dur="9800" data-bend="3.1" style="right:-1%;bottom:8%;width:16%;animation-delay:2.85s" src="assets/undangya/kastil-dongeng/flower-12.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="2.6" data-dur="8400" data-bend="3.9" style="left:-5.5%;bottom:-1.5%;width:31%;animation-delay:2.95s" src="assets/undangya/kastil-dongeng/flower-01.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="2.8" data-dur="7800" data-bend="4.0" style="left:18.5%;bottom:-2%;width:23.5%;animation-delay:3.05s" src="assets/undangya/kastil-dongeng/flower-02.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="3.0" data-dur="7200" data-bend="4.0" style="left:37.5%;bottom:-1%;width:11.5%;animation-delay:3.15s" src="assets/undangya/kastil-dongeng/flower-10.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="2.9" data-dur="7600" data-bend="4.0" style="right:37.5%;bottom:-1%;width:12%;animation-delay:3.2s" src="assets/undangya/kastil-dongeng/flower-08.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="2.7" data-dur="8200" data-bend="3.9" style="right:18.5%;bottom:-2%;width:24%;animation-delay:3.1s" src="assets/undangya/kastil-dongeng/flower-06.webp" alt="">
+      <img class="lyr flw wind-fl" data-wind="flw" data-amp="2.4" data-dur="9000" data-bend="3.8" style="right:-4.5%;bottom:-1.2%;width:26%;animation-delay:3s" src="assets/undangya/kastil-dongeng/flower-04.webp" alt="">
       <img class="lyr lyr-crest" src="assets/undangya/kastil-dongeng/crest.webp" alt="Crest emas kerajaan">
       <img class="lyr lyr-butterfly" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
       <img class="lyr lyr-butterfly b2" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
@@ -475,32 +494,42 @@ body.opened #btnMusic{display:flex}
   }
   if(!reduced)requestAnimationFrame(tick); else {ctx.clearRect(0,0,W,H);}
 
-  /* ================= SISTEM ANGIN =================
+  /* ================= SISTEM ANGIN (versi SMOOTH) =================
      - Ayunan bunga: WAAPI pada properti rotate/translate (terpisah dari animasi
-       transform masuk, jadi menumpuk rapi). Kurva multi-titik tidak beraturan,
-       amplitudo ±3–5deg + geser px; tiap elemen beda durasi/fasa/arah pangkal.
+       transform masuk, jadi menumpuk rapi). Kurva SINUS 9 titik yang rapat dengan
+       easing seimbang di tiap segmen — gerak mengalir tanpa patah/menyentak,
+       seperti kain tertiup angin sepoi. Amplitudo kecil & elegan (bunga ±1,5–3deg,
+       elemen besar ±1–2deg), siklus panjang 6–10 dtk, fasa beda per elemen.
        Pangkal atas (gantungan): menekuk ke kanan = rotate NEGATIF.
        Pangkal bawah (rumpun):  menekuk ke kanan = rotate POSITIF.
-     - Gust: hembusan koheren kiri→kanan tiap 10–14 dtk selama ±2,9 dtk,
-       ditambahkan (composite:'add') di atas ayunan dasar.
-     - Kelopak: sprite petal.webp beterbangan horizontal; saat gust lebih
-       banyak yang aktif dan jauh lebih cepat. Hanya transform/opacity.
+     - Gust: hembusan koheren kiri→kanan tiap ±14–20 dtk selama 9 dtk, naik-turun
+       SMOOTHSTEP (attack ±4 dtk, release ±5 dtk), tekuk maks ±3–4deg; ditambahkan
+       (composite:'add') di atas ayunan dasar.
+     - Kelopak: sprite petal.webp melayang pelan & anggun (jatuh bergoyang);
+       saat gust sedikit lebih cepat, tidak melesat. Hanya transform/opacity.
      Semua mati total bila prefers-reduced-motion. */
   var windOK=!reduced && typeof document.body.animate==="function";
-  var GUST_MS=2900, gustStart=-1e9;
+  var GUST_MS=9000, gustStart=-1e9;
   function gustLevelAt(now){
     var t=(now-gustStart)/GUST_MS;
     if(t<0||t>=1)return 0;
-    return t<.34 ? t/.34 : 1-(t-.34)/.66;
+    var sm=function(x){x=Math.min(1,Math.max(0,x));return x*x*(3-2*x);};
+    return t<.45 ? sm(t/.45) : 1-sm((t-.45)/.55);
   }
-  var WIND_OFF=[0,.18,.41,.63,.82,1];
-  var WIND_EZ=["cubic-bezier(.45,.05,.55,.95)","cubic-bezier(.4,.1,.6,.9)","cubic-bezier(.5,0,.5,1)","cubic-bezier(.42,.08,.58,.92)","cubic-bezier(.45,.05,.55,.95)"];
+  var WIND_OFF=[0,.125,.25,.375,.5,.625,.75,.875,1];
+  var WIND_EZ="cubic-bezier(.37,.02,.63,.98)";
+  var SWAY9=[0,.71,1,.71,0,-.71,-1,-.71,0]; /* satu gelombang sinus penuh, 9 titik */
   function windFrames(prop,vals){
     return vals.map(function(v,i){
       var f={}; f[prop]=v; f.offset=WIND_OFF[i];
-      if(i<WIND_EZ.length)f.easing=WIND_EZ[i];
+      if(i<vals.length-1)f.easing=WIND_EZ;
       return f;
     });
+  }
+  function swayVals(amp,tx,ty){
+    var rot=SWAY9.map(function(f){return (f*amp).toFixed(2)+"deg";});
+    var tr=SWAY9.map(function(f){return (f*tx).toFixed(1)+"px "+(Math.abs(f)*ty).toFixed(1)+"px";});
+    return [rot,tr];
   }
   function swayWind(el,rot,tr,dur,delay){
     if(!windOK||!el)return;
@@ -509,24 +538,34 @@ body.opened #btnMusic{display:flex}
       el.animate(windFrames("translate",tr),{duration:dur,delay:delay||0,iterations:Infinity});
     }catch(e){}
   }
-  swayWind(document.querySelector('[data-wind="top"]'),
-    ["1.5deg","-3.8deg","-1deg","-4.6deg","0.5deg","1.5deg"],
-    ["0px 0px","6px 1px","10px 0px","4px 2px","-2px 0px","0px 0px"],5600,0);
-  /* bunga individual bawah sampul (.flw): tiap bunga sway SENDIRI dari pangkal bawahnya.
-     Amplitudo (data-amp, ±2–5deg), durasi (data-dur, 4–8 dtk) dan fasa berbeda per bunga,
-     mengikuti pola kurva angin yang sama; arah pangkal bawah = positif (menekuk ke kanan). */
-  var FLW_PAT=[-0.21,0.71,1,0.42,-0.46,-0.21], FLW_TR=[0,0.55,1,0.33,-0.22,0];
-  document.querySelectorAll(".flw").forEach(function(el,i){
-    var amp=parseFloat(el.getAttribute("data-amp"))||3.4;
-    var dur=parseInt(el.getAttribute("data-dur"),10)||6200;
-    var ph=Math.round(Math.sin(i*39.7)*2300); /* fasa deterministik, beda tiap bunga */
-    var rot=FLW_PAT.map(function(f){return (f*amp).toFixed(2)+"deg";});
-    var tr=FLW_TR.map(function(f){return (f*amp*1.9).toFixed(1)+"px "+(f*amp*0.35).toFixed(1)+"px";});
-    swayWind(el,rot,tr,dur,ph);
+  /* bunga individual ATAS sampul (.flwt): tiap bunga sway SENDIRI dari pangkal
+     gantungnya di atas. Amplitudo (data-amp), durasi (data-dur, 7,6–9,8 dtk) dan fasa
+     berbeda per bunga mengikuti gelombang sinus yang sama; arah pangkal atas =
+     NEGATIF (menekuk ke kanan). */
+  document.querySelectorAll(".flwt").forEach(function(el,i){
+    var amp=parseFloat(el.getAttribute("data-amp"))||2.1;
+    var dur=parseInt(el.getAttribute("data-dur"),10)||8600;
+    var ph=Math.round(Math.sin(i*53.3+11)*2600); /* fasa deterministik, beda tiap bunga */
+    var v=swayVals(-amp,amp*1.6,amp*0.2);
+    swayWind(el,v[0],v[1],dur,ph);
   });
-  swayWind(document.querySelector('[data-wind="soft"]'),
-    ["1deg","-2.6deg","-0.6deg","-3.2deg","0.4deg","1deg"],
-    ["0px 0px","4px 1px","7px 0px","3px 1px","-1px 0px","0px 0px"],7400,-1200);
+  /* bunga individual bawah sampul (.flw): tiap bunga sway SENDIRI dari pangkal bawahnya.
+     Amplitudo (data-amp, ±1,6–3deg), durasi (data-dur, 7,2–9,8 dtk) dan fasa berbeda per bunga,
+     mengikuti gelombang sinus yang sama; arah pangkal bawah = positif (menekuk ke kanan). */
+  document.querySelectorAll(".flw").forEach(function(el,i){
+    var amp=parseFloat(el.getAttribute("data-amp"))||2.2;
+    var dur=parseInt(el.getAttribute("data-dur"),10)||8400;
+    var ph=Math.round(Math.sin(i*39.7)*2600); /* fasa deterministik, beda tiap bunga */
+    var v=swayVals(amp,amp*1.6,amp*0.25);
+    swayWind(el,v[0],v[1],dur,ph);
+  });
+  /* strip hias di Penutup: elemen besar, amplitudo paling kecil (±1,2deg), siklus terpanjang */
+  (function(){
+    var el=document.querySelector('[data-wind="soft"]');
+    if(!el)return;
+    var v=swayVals(-1.2,2,0.5);
+    swayWind(el,v[0],v[1],9800,-1500);
+  })();
 
   function doGust(){
     if(!windOK)return;
@@ -534,14 +573,17 @@ body.opened #btnMusic{display:flex}
     document.querySelectorAll("[data-wind]").forEach(function(el){
       var kind=el.getAttribute("data-wind");
       var sign=(kind==="bottom"||kind==="flw")?1:-1; /* satu arah angin: kiri → kanan */
-      var bend=parseFloat(el.getAttribute("data-bend"))||((kind==="soft")?5:7.5);
+      var bend=parseFloat(el.getAttribute("data-bend"))||3.5;
+      var EZ="cubic-bezier(.45,.05,.55,.95)";
       try{
         el.animate([
-          {rotate:"0deg",translate:"0px 0px",easing:"cubic-bezier(.3,.7,.35,1)"},
-          {rotate:(sign*bend)+"deg",translate:"16px 0px",offset:.34,easing:"ease-out"},
-          {rotate:(sign*bend*.7)+"deg",translate:"11px 0px",offset:.58,easing:"ease-in-out"},
-          {rotate:(sign*bend*.85)+"deg",translate:"13px 0px",offset:.78,easing:"ease-in-out"},
-          {rotate:"0deg",translate:"0px 0px"}
+          {rotate:"0deg",translate:"0px 0px",offset:0,easing:EZ},
+          {rotate:(sign*bend*.45)+"deg",translate:(bend*1.1).toFixed(1)+"px 0px",offset:.28,easing:EZ},
+          {rotate:(sign*bend*.8)+"deg",translate:(bend*1.9).toFixed(1)+"px 0px",offset:.42,easing:EZ},
+          {rotate:(sign*bend)+"deg",translate:(bend*2.3).toFixed(1)+"px 0px",offset:.5,easing:EZ},
+          {rotate:(sign*bend*.72)+"deg",translate:(bend*1.7).toFixed(1)+"px 0px",offset:.66,easing:EZ},
+          {rotate:(sign*bend*.34)+"deg",translate:(bend*.8).toFixed(1)+"px 0px",offset:.84,easing:EZ},
+          {rotate:"0deg",translate:"0px 0px",offset:1}
         ],{duration:GUST_MS,composite:"add"});
       }catch(e){/* composite add tak didukung: ayunan dasar tetap berjalan */}
     });
@@ -551,7 +593,7 @@ body.opened #btnMusic{display:flex}
     setTimeout(function(){
       if(!document.hidden)doGust();
       scheduleGust(false);
-    }, first?6500:(10000+Math.random()*4000));
+    }, first?8000:(14000+Math.random()*6000));
   }
   if(windOK)scheduleGust(true);
   window.__triggerGust=doGust; /* kait uji render */
@@ -572,9 +614,9 @@ body.opened #btnMusic{display:flex}
       items.push({
         el:img, gustOnly:i>=count-gustExtra,
         x:Math.random()*470-20, y:.04+Math.random()*.62,
-        vx:.55+Math.random()*.85, vy:.10+Math.random()*.30,
-        ph:Math.random()*Math.PI*2, fs:.0016+Math.random()*.0016,
-        rot:Math.random()*360, vr:Math.random()*1.6-.8
+        vx:.30+Math.random()*.45, vy:.05+Math.random()*.16,
+        ph:Math.random()*Math.PI*2, fs:.0011+Math.random()*.0011,
+        rot:Math.random()*360, vr:Math.random()*.9-.45
       });
     }
     petalFields.push({el:field,items:items,active:false,w:0,h:0});
@@ -589,15 +631,15 @@ body.opened #btnMusic{display:flex}
       if(!F.w||Math.abs(F.el.clientHeight-F.h)>60){F.w=F.el.clientWidth||430;F.h=F.el.clientHeight||800;}
       for(var i=0;i<F.items.length;i++){
         var p=F.items[i];
-        p.x+=p.vx*(1+gl*2.3)+gl*1.7;
-        p.y+=p.vy*(1+gl*.8)/Math.max(F.h,1);
-        p.rot+=p.vr*(1+gl*1.5);
+        p.x+=p.vx*(1+gl*.9)+gl*.5;
+        p.y+=p.vy*(1+gl*.3)/Math.max(F.h,1);
+        p.rot+=p.vr*(1+gl*.6);
         if(p.x>F.w+36||p.y>1.06){
           p.x=-36-Math.random()*50; p.y=.04+Math.random()*.6;
-          p.vx=.55+Math.random()*.85; p.vy=.10+Math.random()*.30;
+          p.vx=.30+Math.random()*.45; p.vy=.05+Math.random()*.16;
         }
-        var yPix=p.y*F.h+Math.sin(now*p.fs*2.4+p.ph)*9;
-        var sx=.55+.45*Math.sin(now*.004+p.ph);
+        var yPix=p.y*F.h+Math.sin(now*p.fs*1.5+p.ph)*13;
+        var sx=.62+.38*Math.sin(now*.0022+p.ph);
         p.el.style.transform="translate3d("+p.x.toFixed(1)+"px,"+yPix.toFixed(1)+"px,0) rotate("+p.rot.toFixed(1)+"deg) scale("+sx.toFixed(2)+",1)";
         p.el.style.opacity=(p.gustOnly?gl*.95:.85).toFixed(2);
       }
