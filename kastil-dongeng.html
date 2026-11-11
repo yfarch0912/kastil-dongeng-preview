@@ -59,8 +59,13 @@ button{font-family:inherit;cursor:pointer}
 @keyframes growDown{from{opacity:0;transform:translateY(-46px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 .lyr-flower-bottom{bottom:-4px;left:0;width:100%;animation:growUp 1.5s 2.7s cubic-bezier(.22,.8,.3,1) both;transform-origin:bottom center}
 @keyframes growUp{from{opacity:0;transform:translateY(46px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
-.sway{animation:sway 6s ease-in-out infinite alternate}
-@keyframes sway{from{rotate:-.7deg}to{rotate:.7deg}}
+/* ANGIN: ayunan bunga digerakkan WAAPI (skrip di bawah) memakai properti rotate/translate
+   yang terpisah dari animasi transform masuk (growDown/growUp) — keduanya menumpuk, tidak bertabrakan */
+.wind-fl{will-change:rotate,translate}
+[data-wind="soft"]{transform-origin:top center}
+.petal-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+.sec-petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.petal{position:absolute;left:0;top:0;pointer-events:none;will-change:transform,opacity}
 .lyr-crest{left:50%;top:1.8%;width:19.5%;transform:translateX(-50%);animation:crestDrop 1.2s 3s cubic-bezier(.22,.8,.3,1) both;z-index:5}
 @keyframes crestDrop{from{opacity:0;transform:translateX(-50%) translateY(-52px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle 2.6s ease-in-out infinite alternate;pointer-events:none;z-index:2}
@@ -214,13 +219,14 @@ body.opened #btnMusic{display:flex}
       <div class="cand-glow l"></div><div class="cand-glow r"></div>
       <img class="lyr lyr-fountain" src="assets/undangya/kastil-dongeng/fountain.webp" alt="Air mancur marmer di depan kastil" data-plx="22">
       <div class="fountain-shimmer"></div>
-      <img class="lyr lyr-flower-top sway" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
-      <img class="lyr lyr-flower-bottom sway" src="assets/undangya/kastil-dongeng/flower-bottom.webp" alt="">
+      <img class="lyr lyr-flower-top wind-fl" data-wind="top" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
+      <img class="lyr lyr-flower-bottom wind-fl" data-wind="bottom" src="assets/undangya/kastil-dongeng/flower-bottom.webp" alt="">
       <img class="lyr lyr-crest" src="assets/undangya/kastil-dongeng/crest.webp" alt="Crest emas kerajaan">
       <img class="lyr lyr-butterfly" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
       <img class="lyr lyr-butterfly b2" src="assets/undangya/kastil-dongeng/butterfly.webp" alt="">
       <img class="lyr lyr-bird" src="assets/undangya/kastil-dongeng/bird.webp" alt="">
       <canvas id="sparkleCv" width="430" height="860" aria-hidden="true"></canvas>
+      <div class="petal-field" id="petalCover" aria-hidden="true"></div>
       <div class="cover-shade"></div>
     </div>
     <div class="cover-ui">
@@ -256,6 +262,7 @@ body.opened #btnMusic{display:flex}
     <!-- ================= MEMPELAI ================= -->
     <section id="mempelai">
       <div class="sec-bg"><img src="assets/undangya/kastil-dongeng/bg-mempelai.webp" alt="" data-plx="6"></div>
+      <div class="sec-petals" aria-hidden="true"></div>
       <div class="bg-tint">
       <div class="sec-head rv rv-up">
         <img class="sec-icon" src="assets/undangya/kastil-dongeng/icon-crown.webp" alt="">
@@ -396,7 +403,8 @@ body.opened #btnMusic{display:flex}
     <!-- ================= PENUTUP ================= -->
     <section id="penutup" style="text-align:center">
       <div class="sec-bg pos-bottom"><img src="assets/undangya/kastil-dongeng/bg-penutup.webp" alt="" data-plx="6"></div>
-      <img class="lyr" style="position:absolute;top:6px;left:0;width:100%;opacity:.55;z-index:1" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
+      <img class="lyr wind-fl" data-wind="soft" style="position:absolute;top:6px;left:0;width:100%;opacity:.55;z-index:1" src="assets/undangya/kastil-dongeng/flower-top.webp" alt="">
+      <div class="sec-petals" aria-hidden="true"></div>
       <div class="bg-tint panel-glass" style="padding:30px 22px 26px">
         <img class="sec-icon rv rv-up" src="assets/undangya/kastil-dongeng/crest.webp" alt="" style="width:74px;height:74px">
         <p class="rv rv-up" style="font-size:14.5px;line-height:1.8;color:#574a75;max-width:320px;margin:6px auto 0">Merupakan suatu kehormatan dan kebahagiaan bagi kami beserta keluarga apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai.</p>
@@ -447,6 +455,152 @@ body.opened #btnMusic{display:flex}
     if(!reduced)requestAnimationFrame(tick);
   }
   if(!reduced)requestAnimationFrame(tick); else {ctx.clearRect(0,0,W,H);}
+
+  /* ================= SISTEM ANGIN =================
+     - Ayunan bunga: WAAPI pada properti rotate/translate (terpisah dari animasi
+       transform masuk, jadi menumpuk rapi). Kurva multi-titik tidak beraturan,
+       amplitudo ±3–5deg + geser px; tiap elemen beda durasi/fasa/arah pangkal.
+       Pangkal atas (gantungan): menekuk ke kanan = rotate NEGATIF.
+       Pangkal bawah (rumpun):  menekuk ke kanan = rotate POSITIF.
+     - Gust: hembusan koheren kiri→kanan tiap 10–14 dtk selama ±2,9 dtk,
+       ditambahkan (composite:'add') di atas ayunan dasar.
+     - Kelopak: sprite petal.webp beterbangan horizontal; saat gust lebih
+       banyak yang aktif dan jauh lebih cepat. Hanya transform/opacity.
+     Semua mati total bila prefers-reduced-motion. */
+  var windOK=!reduced && typeof document.body.animate==="function";
+  var GUST_MS=2900, gustStart=-1e9;
+  function gustLevelAt(now){
+    var t=(now-gustStart)/GUST_MS;
+    if(t<0||t>=1)return 0;
+    return t<.34 ? t/.34 : 1-(t-.34)/.66;
+  }
+  var WIND_OFF=[0,.18,.41,.63,.82,1];
+  var WIND_EZ=["cubic-bezier(.45,.05,.55,.95)","cubic-bezier(.4,.1,.6,.9)","cubic-bezier(.5,0,.5,1)","cubic-bezier(.42,.08,.58,.92)","cubic-bezier(.45,.05,.55,.95)"];
+  function windFrames(prop,vals){
+    return vals.map(function(v,i){
+      var f={}; f[prop]=v; f.offset=WIND_OFF[i];
+      if(i<WIND_EZ.length)f.easing=WIND_EZ[i];
+      return f;
+    });
+  }
+  function swayWind(el,rot,tr,dur,delay){
+    if(!windOK||!el)return;
+    try{
+      el.animate(windFrames("rotate",rot),{duration:dur,delay:delay||0,iterations:Infinity});
+      el.animate(windFrames("translate",tr),{duration:dur,delay:delay||0,iterations:Infinity});
+    }catch(e){}
+  }
+  swayWind(document.querySelector('[data-wind="top"]'),
+    ["1.5deg","-3.8deg","-1deg","-4.6deg","0.5deg","1.5deg"],
+    ["0px 0px","6px 1px","10px 0px","4px 2px","-2px 0px","0px 0px"],5600,0);
+  swayWind(document.querySelector('[data-wind="bottom"]'),
+    ["-1deg","3.4deg","4.8deg","2deg","-2.2deg","-1deg"],
+    ["0px 0px","5px 0px","9px -1px","3px 1px","-2px 0px","0px 0px"],6800,-2300);
+  swayWind(document.querySelector('[data-wind="soft"]'),
+    ["1deg","-2.6deg","-0.6deg","-3.2deg","0.4deg","1deg"],
+    ["0px 0px","4px 1px","7px 0px","3px 1px","-1px 0px","0px 0px"],7400,-1200);
+
+  function doGust(){
+    if(!windOK)return;
+    gustStart=performance.now();
+    document.querySelectorAll("[data-wind]").forEach(function(el){
+      var kind=el.getAttribute("data-wind");
+      var sign=(kind==="bottom")?1:-1;               /* satu arah angin: kiri → kanan */
+      var bend=(kind==="soft")?5:7.5;
+      try{
+        el.animate([
+          {rotate:"0deg",translate:"0px 0px",easing:"cubic-bezier(.3,.7,.35,1)"},
+          {rotate:(sign*bend)+"deg",translate:"16px 0px",offset:.34,easing:"ease-out"},
+          {rotate:(sign*bend*.7)+"deg",translate:"11px 0px",offset:.58,easing:"ease-in-out"},
+          {rotate:(sign*bend*.85)+"deg",translate:"13px 0px",offset:.78,easing:"ease-in-out"},
+          {rotate:"0deg",translate:"0px 0px"}
+        ],{duration:GUST_MS,composite:"add"});
+      }catch(e){/* composite add tak didukung: ayunan dasar tetap berjalan */}
+    });
+  }
+  function scheduleGust(first){
+    if(!windOK)return;
+    setTimeout(function(){
+      if(!document.hidden)doGust();
+      scheduleGust(false);
+    }, first?6500:(10000+Math.random()*4000));
+  }
+  if(windOK)scheduleGust(true);
+  window.__triggerGust=doGust; /* kait uji render */
+  window.__windState=function(){return {wind:windOK,gustLevel:+gustLevelAt(performance.now()).toFixed(2),petals:document.querySelectorAll(".petal").length};};
+
+  /* --- kelopak beterbangan --- */
+  var PETAL_SRC="assets/undangya/kastil-dongeng/petal.webp";
+  var petalFields=[];
+  function makePetals(field,count,gustExtra){
+    if(reduced||!field)return;
+    var items=[];
+    for(var i=0;i<count;i++){
+      var img=document.createElement("img");
+      img.className="petal"; img.src=PETAL_SRC; img.alt="";
+      img.style.width=(13+Math.random()*13).toFixed(0)+"px";
+      img.style.opacity="0";
+      field.appendChild(img);
+      items.push({
+        el:img, gustOnly:i>=count-gustExtra,
+        x:Math.random()*470-20, y:.04+Math.random()*.62,
+        vx:.55+Math.random()*.85, vy:.10+Math.random()*.30,
+        ph:Math.random()*Math.PI*2, fs:.0016+Math.random()*.0016,
+        rot:Math.random()*360, vr:Math.random()*1.6-.8
+      });
+    }
+    petalFields.push({el:field,items:items,active:false,w:0,h:0});
+  }
+  var petalRunning=false;
+  function petalTick(now){
+    var gl=gustLevelAt(now), any=false;
+    for(var fi=0;fi<petalFields.length;fi++){
+      var F=petalFields[fi];
+      if(!F.active||F.el.getClientRects().length===0)continue;
+      any=true;
+      if(!F.w||Math.abs(F.el.clientHeight-F.h)>60){F.w=F.el.clientWidth||430;F.h=F.el.clientHeight||800;}
+      for(var i=0;i<F.items.length;i++){
+        var p=F.items[i];
+        p.x+=p.vx*(1+gl*2.3)+gl*1.7;
+        p.y+=p.vy*(1+gl*.8)/Math.max(F.h,1);
+        p.rot+=p.vr*(1+gl*1.5);
+        if(p.x>F.w+36||p.y>1.06){
+          p.x=-36-Math.random()*50; p.y=.04+Math.random()*.6;
+          p.vx=.55+Math.random()*.85; p.vy=.10+Math.random()*.30;
+        }
+        var yPix=p.y*F.h+Math.sin(now*p.fs*2.4+p.ph)*9;
+        var sx=.55+.45*Math.sin(now*.004+p.ph);
+        p.el.style.transform="translate3d("+p.x.toFixed(1)+"px,"+yPix.toFixed(1)+"px,0) rotate("+p.rot.toFixed(1)+"deg) scale("+sx.toFixed(2)+",1)";
+        p.el.style.opacity=(p.gustOnly?gl*.95:.85).toFixed(2);
+      }
+    }
+    if(any)requestAnimationFrame(petalTick); else petalRunning=false;
+  }
+  function petalKick(){
+    if(petalRunning||reduced)return;
+    petalRunning=true; requestAnimationFrame(petalTick);
+  }
+  if(!reduced){
+    makePetals(document.getElementById("petalCover"),14,5);
+    document.querySelectorAll(".sec-petals").forEach(function(f){makePetals(f,6,2);});
+    if(petalFields.length)petalFields[0].active=true; /* ladang sampul langsung aktif */
+    if("IntersectionObserver" in window){
+      var pio=new IntersectionObserver(function(es){
+        es.forEach(function(en){
+          for(var k=0;k<petalFields.length;k++){
+            if(petalFields[k].el===en.target){
+              petalFields[k].active=en.isIntersecting;
+              if(en.isIntersecting)petalKick();
+            }
+          }
+        });
+      },{threshold:.05});
+      document.querySelectorAll(".sec-petals").forEach(function(f){pio.observe(f);});
+    }else{
+      petalFields.forEach(function(F){F.active=true;});
+    }
+    petalKick();
+  }
 
   /* --- buka undangan --- */
   var audio=document.getElementById("bgmShared"), btnMusic=document.getElementById("btnMusic"), opened=false;
